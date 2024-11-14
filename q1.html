@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form with Live Validation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .box {
+            height: auto;
+            width: 500px;
+            background-color: antiquewhite;
+            flex: 2;
+            margin: auto;
+            padding: 100px;
+            border-radius: 10px;
+
+        }
+
+        .error {
+            color: red;
+            display: none;
+        }
+
+        .h1 {
+            color: brown;
+            size: 10px;
+            font-weight: 300;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            flex: 2;
+            padding: 8px;
+        }
+
+        .form-group label {
+            size: 50px;
+            min-width: 140px;
+            margin-right: 10px;
+        }
+
+        .error_message {
+            color: red;
+        }
+
+        .success_message {
+            color: green;
+        }
+
+        label {
+            color: brown;
+            font-weight: 200;
+            font-size: large;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: rgb(38, 141, 38);
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="container">
+            <h2>Registration Form</h2>
+        </div>
+        <form id="form">
+
+            <div class="form-group">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name">
+                <span id="nameError" class="error">Name is required.</span><br><br>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required>
+                <span id="emailError" class="error">Please enter a valid email.</span><br><br>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#name").on("input", function () {
+                let name = $(this).val().trim();
+                if (name === "") {
+                    $("#nameError").show();
+                } else {
+                    $("#nameError").hide();
+
+                }
+            });
+
+            function validateEmail(email) {
+                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                return emailPattern.test(email);
+            }
+
+            $("#email").on("input", function () {
+                let email = $(this).val();
+                if (!validateEmail(email)) {
+                    $("#emailError").show();
+                } else {
+                    $("#emailError").hide();
+                }
+            });
+
+            $("#form").on("submit", function (event) {
+                event.preventDefault();
+
+                let name = $("#name").val();
+                let email = $("#email").val();
+
+                if (name.trim() !== "" && validateEmail(email)) {
+                    alert("Name: " + name + "\nEmail: " + email);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load More Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Posts</h1>
+        <ul id="postList"></ul>
+        <button id="loadMore" style="display: none;">Load More</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let page = 1; // Start from the first page
+            const limit = 5; // Number of posts per page
+
+            function loadPosts() {
+                $.ajax({
+                    url: `https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`,
+                    method: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            data.forEach(post => {
+                                $('#postList').append(`<li><strong>${post.title}</strong><p>${post.body}</p></li>`);
+                            });
+                            $('#loadMore').show(); // Show the "Load More" button
+                            page++; // Increment the page for the next fetch
+                        } else {
+                            $('#loadMore').hide(); // Hide the button if no more posts
+                        }
+                    },
+                    error: function() {
+                        alert('Error fetching posts');
+                    }
+                });
+            }
+
+            // Load initial posts
+            loadPosts();
+
+            // Load more posts when the button is clicked
+            $('#loadMore').on('click', function() {
+                loadPosts();
+            });
+        });
+
+    </script>
+</body>
+</html>

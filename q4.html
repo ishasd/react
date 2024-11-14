@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .slider {
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #007BFF;
+            border-radius: 8px;
+        }
+
+        .buttons {
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <img id="sliderImage" src="nature.jpg" alt="Slider Image">
+        <div class="buttons">
+            <button id="prevButton">Previous</button>
+            <button id="nextButton">Next</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const images = [
+                'flwr.jpg',
+                'nature.jpg',
+                'ptzd.jpg'
+            ];
+
+            let currentIndex = 0;
+
+            function updateImage() {
+                $('#sliderImage').attr('src', images[currentIndex]);
+            }
+
+            $('#nextButton').click(function() {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateImage();
+            });
+
+            $('#prevButton').click(function() {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateImage();
+            });
+        });
+
+    </script>
+    
+</body>
+</html>

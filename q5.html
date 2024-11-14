@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #myForm label{
+            color: #0056b3;
+            font-weight: 300;
+            font-size: large;
+            margin-bottom: 8px;
+        }
+        input {
+            size: a5;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <form id="myForm">
+        <label for="textInput">Enter Text:</label>
+        <input type="text" id="textInput" name="textInput">
+        <span class="error" style="display:none; color: red;">This field is required!</span>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Prevent the form from submitting
+                event.preventDefault();
+
+                // Get the value of the input field
+                var inputValue = $('#textInput').val();
+
+                // Check if the input is empty
+                if (inputValue.trim() === '') {
+                    // Show error message
+                    $('.error').show();
+                } else {
+                    // Hide error message and proceed with form submission
+                    $('.error').hide();
+                    // Here you can add code to handle form submission (e.g., AJAX)
+                    alert('Form submitted successfully!');
+                }
+            });
+        });
+
+    </script>    
+</body>
+</html>

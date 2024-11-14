@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chat Application</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .message {
+            margin: 5px 0;
+        }
+
+        input {
+            width: calc(100% - 60px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="messages" class="messages"></div>
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button id="sendButton">Send</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function fetchMessages() {
+                $.ajax({
+                    url: 'chat.php',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#messages').html(data);
+                        $('#messages').scrollTop($('#messages')[0].scrollHeight);
+                    }
+                });
+            }
+
+            $('#sendButton').on('click', function() {
+                const message = $('#messageInput').val();
+                if (message.trim() === '') return;
+
+                $.ajax({
+                    url: 'chat.php',
+                    method: 'POST',
+                    data: { message: message },
+                    success: function() {
+                        $('#messageInput').val(''); // Clear input field
+                        fetchMessages(); // Refresh messages
+                    }
+                });
+            });
+
+            // Fetch messages every second
+            setInterval(fetchMessages, 1000);
+        });
+
+    </script>    
+    
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State and City Dropdown</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .box{
+            height: auto;
+            width: 500px;
+            background-color: antiquewhite;
+            flex: 2;
+            margin: auto;
+            padding: 50px;
+            border-radius: 10px;
+        }
+        label{
+            font-size: 20px;
+        }
+        .form-group{
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h1>Select State and City</h1>
+
+    <div class="form-group">
+        <label for="states">State:</label>
+        <select id="states">
+        <option value="" disabled selected>Select a state</option>
+        <option value="California">California</option>
+        <option value="Texas">Texas</option>
+        <option value="New York">New York</option>
+        <option value="Florida">Florida</option>
+    </select>
+    </div>
+
+    <br><br>
+
+    <div class="form-group">
+        <label for="cities">City:</label>
+        <select id="cities">
+        <option value="" disabled selected>Select a state first</option>
+    </select>
+    </div>
+
+    </div>
+    <script>
+        $(document).ready(function() {
+            // Data for cities based on state
+            const citiesByState = {
+                "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento"],
+                "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
+                "New York": ["New York City", "Buffalo", "Rochester", "Albany"],
+                "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"]
+            };
+
+            // Event listener for state dropdown change
+            $("#states").change(function() {
+                let selectedState = $(this).val();
+                let citiesOptions = '<option value="" disabled selected>Select a city</option>';
+
+                if (selectedState) {
+                    // Populate the cities dropdown based on the selected state
+                    citiesByState[selectedState].forEach(function(city) {
+                        citiesOptions += `<option value="${city}">${city}</option>`;
+                    });
+                }
+
+                // Update the cities dropdown
+                $("#cities").html(citiesOptions);
+            });
+        });
+    </script>
+
+</body>
+</html>

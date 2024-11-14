@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+        integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Autocomplete Search with Unsplash API</title>
+    <style>
+        .autocomplete-suggestions {
+            border: 1px solid #ccc;
+            max-height: 700px;
+            overflow-y: auto;
+            position: absolute;
+            background-color: white;
+            z-index: 1000;
+            width: 84%;
+        }
+
+        .autocomplete-suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .autocomplete-suggestion:hover {
+            background-color: #f0f0f0;
+        }
+
+        .autocomplete-suggestion img {
+            max-width: 50px;
+            max-height: 50px;
+            margin-right: 10px;
+        }
+
+        .div {
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Autocomplete Image Search</h2>
+        <input type="text" id="search" class="form-control" placeholder="Type to search images...">
+        <div id="suggestions" class="autocomplete-suggestions"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Event listener for keyup on the search input
+            $('#search').keyup(function () {
+                let query = $(this).val().trim();
+
+                // If the input has more than 2 characters, send an AJAX request
+                if (query.length > 2) {
+                    $.ajax({
+                        url: `https://api.unsplash.com/search/photos?client_id=ihSZRQqQcEgBgRsF6Ceyqxje13_RyLuOxVZx6xqQk30&lang=en&page=1&query=${query}`,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#suggestions').empty(); // Clear previous suggestions
+
+                            // Display suggestions
+                            data.results.forEach(item => {
+                                $('#suggestions').append(`
+                            <div class="autocomplete-suggestion">
+                                <img src="${item.urls.thumb}" alt="${item.alt_description}">
+                                ${item.alt_description || "Untitled Image"}
+                            </div>
+                        `);
+                            });
+
+                            // Attach click event to each suggestion
+                            $('.autocomplete-suggestion').on('click', function () {
+                                $('#search').val($(this).text()); // Set the input field with the selected suggestion
+                                $('#suggestions').empty(); // Clear suggestions after selecting
+                            });
+                        }
+                    });
+                } else {
+                    $('#suggestions').empty(); // Clear suggestions if the input is too short
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
